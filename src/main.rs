@@ -12,16 +12,25 @@ mod prelude {
 use prelude::*;
 
 fn main() -> BError {
-    let context = BTermBuilder::simple80x50().with_title("Dungeon Crawl").build()?;
+    let context = BTermBuilder::simple80x50().with_title("Dungeon Crawl").with_fps_cap(30.0).build()?;
 
-    main_loop(context, State{})
+    main_loop(context, State::new())
 }
 
-struct State {}
+struct State {
+    map: Map
+}
+
+impl State {
+    fn new() -> Self {
+        Self { map: Map::new() }
+    }
+}
 
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
         ctx.cls();
         ctx.print(1, 1, "Hello Bracket Terminal");
+        self.map.render(ctx);
     }
 }
