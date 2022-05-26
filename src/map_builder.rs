@@ -9,6 +9,21 @@ pub struct MapBuilder {
 }
 
 impl MapBuilder {
+
+    pub fn new(rng: &mut RandomNumberGenerator) -> Self {
+        let mut mb = MapBuilder {
+            map: Map::new(),
+            rooms: Vec::new(),
+            player_start: Point::zero()
+        };
+
+        mb.fill(TileType::Wall);
+        mb.build_random_rooms(rng);
+        mb.build_corridors(rng);
+        mb.player_start = mb.rooms[0].center();
+        mb
+    }
+
     fn fill(&mut self, tile: TileType) {
         self.map.tiles.iter_mut().for_each(|t| *t = tile);
     }
@@ -71,8 +86,9 @@ impl MapBuilder {
                 self.apply_vertical_tunnel(prev.y, new.y, new.x);
             } else {
                 self.apply_vertical_tunnel(prev.y, new.y, prev.x);
-                self.apply_vhorizontal_tunnel(prev.x, new.x, new.y);
+                self.apply_horizontal_tunnel(prev.x, new.x, new.y);
             }
         }
     }
+
 }
