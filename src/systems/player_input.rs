@@ -5,7 +5,7 @@ use crate::prelude::*;
 #[read_component(Player)]
 pub fn player_input(
     ecs: &mut SubWorld,
-    #[resource] map: &map,
+    #[resource] map: &Map,
     #[resource] key: &Option<VirtualKeyCode>,
     #[resource] camera: &mut Camera
 ) {
@@ -18,7 +18,7 @@ pub fn player_input(
             _ => Point::new(0, 0)
         };
 
-        if delta.x != 0 && delta.y != 0 {
+        if delta.x != 0 || delta.y != 0 {
             let mut players = <&mut Point>::query()
                 .filter(component::<Player>());
             players.iter_mut(ecs).for_each(|pos| {
