@@ -1,4 +1,5 @@
 mod player_input;
+mod map_render;
 
 use crate::prelude::*;
 use player_input::*;
@@ -7,5 +8,6 @@ use player_input::*;
 pub fn build_scheduler() -> Schedule {
     Schedule::builder()
         .add_system(player_input::player_input_system())
-            .build()
+        .add_system(map_render::map_render_system())
+        .build()
 }
