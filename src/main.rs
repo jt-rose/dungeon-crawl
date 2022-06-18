@@ -48,7 +48,7 @@ struct State {
     resources: Resources,
     input_systems: Schedule,
     player_systems: Schedule,
-    monster_systems: Schedule
+    monster_systems: Schedule,
 }
 
 impl State {
@@ -74,7 +74,7 @@ impl State {
             resources,
             input_systems: build_input_scheduler(),
             player_systems: build_player_scheduler(),
-            monster_systems: build_monster_scheduler()
+            monster_systems: build_monster_scheduler(),
         }
     }
 }
@@ -89,16 +89,15 @@ impl GameState for State {
         //self.systems.execute(&mut self.ecs, &mut self.resources);
         let current_state = self.resources.get::<TurnState>().unwrap().clone();
         match current_state {
-            TurnState::AwaitingInput => self.input_systems.execute(
-                &mut self.ecs,
-                &mut self.resources
-            ),
-            TurnState::PlayerTurn => self.player_systems.execute(
-                &mut self.ecs, &mut self.resources
-            ),
-            TurnState::MonsterTurn => self.monster_systems.execute(
-                &mut self.ecs, &mut self.resources
-            )
+            TurnState::AwaitingInput => self
+                .input_systems
+                .execute(&mut self.ecs, &mut self.resources),
+            TurnState::PlayerTurn => self
+                .player_systems
+                .execute(&mut self.ecs, &mut self.resources),
+            TurnState::MonsterTurn => self
+                .monster_systems
+                .execute(&mut self.ecs, &mut self.resources),
         }
         render_draw_buffer(ctx).expect("Render Error");
     }
